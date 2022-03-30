@@ -5,11 +5,10 @@ public class Main
     public static void main(String[] args) 
     {
         Rede iFace = new Rede();
-        
+        /*
+       System.out.println("Criação da conta\n"); 
        iFace.createAccount();
-       //iFace.createAccount();
        
-       /*
        System.out.println("Buscando informações do usuário\n");
        iFace.getAccount();
 
