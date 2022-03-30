@@ -1,7 +1,7 @@
 # Funcionalidades:
 
 1) Criação de Conta (Implementado)
-2) Criação/Edição de Pefil
+2) Criação/Edição de Pefil (Implementado)
 3) Adição de Amigos
 4) Envio de Mensagens
 5) Criação de Comunidades
