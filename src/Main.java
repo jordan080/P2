@@ -7,11 +7,15 @@ public class Main
         Rede iFace = new Rede();
        iFace.createAccount();
        iFace.createAccount();
-
-       iFace.getAccount("Jordan");
-
-       iFace.removeAccount("Jordan");
        
-       iFace.getAccount("Jordan");
+       
+       System.out.println("Buscando informações do usuário\n");
+       iFace.getAccount();
+
+       System.out.println("Removendo conta\n");
+       iFace.removeAccount();
+       
+       System.out.println("Verificando se a conta ainda existe\n");
+       iFace.getAccount();
     } 
 }

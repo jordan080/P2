@@ -1,6 +1,7 @@
 package src;
 
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Usuario 
 {
@@ -29,4 +30,5 @@ public class Usuario
     {
         return nickName;
     }
+    
 }

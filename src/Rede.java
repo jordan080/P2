@@ -29,7 +29,7 @@ public class Rede
         System.out.println("Insira seu nome: ");
         String nameUs = reader.next();
 
-        System.out.println("Insira seu nome de usuário: ");
+        System.out.println("Insira seu apelido: ");
         String nickUs = reader.next();
 
         System.out.println("Insira sua senha: ");
@@ -39,46 +39,48 @@ public class Rede
         usuarios.add(newUser);
     }
 
-    public void getAccount(String name)
+    public void getAccount()
     {
-    	/*
-        Usuario u1 = usuarios.get(0);
-        Usuario u2 = usuarios.get(1);
-
-        System.out.println(u1.getName());
-        System.out.println(u2.getName());
-        */
+    	Scanner reader_bus = new Scanner(System.in);
+    	System.out.println("Insira o apelido do usuário a ser buscado:");
+    	String user = reader_bus.next();
+    	//reader_bus.close();
         
         Iterator<Usuario> iter = usuarios.iterator();
 
         while(iter.hasNext())
         {
             Usuario u = iter.next();
-            if(u.getName().equals(name))
+            if(u.getNick().equals(user))
             {
-            	System.out.println(u.getNick());
+            	System.out.println(u.getName());
             	return;
             }
         }
         
-        System.out.println("Usuário não encontrado");
+        System.out.println("Usuário não encontrado\n");
     }
 
-    public void removeAccount(String name)
+    public void removeAccount()
     {
+    	Scanner reader_rem = new Scanner(System.in);
+    	System.out.println("Insira o apelido do usuário a ser removido:");
+    	String user = reader_rem.next();
+    	//reader_rem.close();
+    	
         Iterator<Usuario> iter = usuarios.iterator();
 
         while(iter.hasNext())
         {
             Usuario u = iter.next();
-            if(u.getName().equals(name))
+            if(u.getNick().equals(user))
             {
                 iter.remove();
-                System.out.println("Usuário removido");
+                System.out.println("Usuário removido\n");
                 return;
             }
         }
         
-        System.out.println("Usuário não encontrado");
+        System.out.println("Usuário não encontrado\n");
     }
 }
