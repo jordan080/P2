@@ -1,2 +1,12 @@
-# P2
-Repositório que contém o projeto da disciplina de Projeto de Software
+# Funcionalidades:
+
+1) Criação de Conta
+2) Criação/Edição de Pefil
+3) Adição de Amigos
+4) Envio de Mensagens
+5) Criação de Comunidades
+6) Adição de Membros
+7) Recuperar informações sobre um determinado usuário
+8) Remoção da Conta
+9) Envio de Mensagens no feed de noticias
+10) Controle de visualização do filtro de notícias
