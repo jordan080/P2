@@ -38,6 +38,27 @@ public class Rede
         Usuario newUser = new Usuario(nameUs, passUs, nickUs);
         usuarios.add(newUser);
     }
+    
+    public void editAccount()
+    {
+    	Scanner reader_bus = new Scanner(System.in);
+    	System.out.println("Insira o apelido do usuário a ser buscado:");
+    	String user = reader_bus.next();
+    	
+    	Iterator<Usuario> iter = usuarios.iterator();
+
+        while(iter.hasNext())
+        {
+            Usuario u = iter.next();
+            if(u.getNick().equals(user))
+            {
+            	u.editInfo();
+            	return;
+            }
+        }
+        
+        System.out.println("Usuário não encontrado\n");
+    }
 
     public void getAccount()
     {
