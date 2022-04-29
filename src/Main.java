@@ -5,16 +5,15 @@ import java.util.Scanner;
 class Main
 {
     static Account userLogged = null;
-    public static ArrayList<Community> communities = new ArrayList<Community>();
-    public static ArrayList<Message> feed = new ArrayList<Message>();
-    public static ArrayList<Account> users = new ArrayList<Account>();
+    static Network iFace = new Network();
+    static ArrayList<Account> users = iFace.getUsers();
+    static ArrayList<Community> communities = iFace.getComs();
+    static ArrayList<Message> feed = iFace.getFeed();
 
     public static void main(String[] args) 
     {
-
         boolean isLogged = false;
-
-        Scanner userInp = new Scanner(System.in);
+        Scanner userInput = new Scanner(System.in);
         Console console = System.console();
 
         while(true)
@@ -22,28 +21,16 @@ class Main
             if (!isLogged)
             {
                 menuNotLogged();
-                int option = userInp.nextInt();
+                int option = userInput.nextInt();
 
                 if (option == 1)
+                //Create a account
                 {
-                    System.out.println("Creating account");
-                    String userName = console.readLine("Insert your name: ");
-                    String userNickname = console.readLine("Insert your a nickname: ");
-                    String userPassword = console.readLine("Insert your password: ");
-
-                    if(findUser(userNickname, users))
-                    {
-                        System.out.println("This user was already created.");
-                    }
-                    else
-                    {
-                        Account newUser = new Account(userName, userPassword, userNickname);
-                        users.add(newUser);
-                        System.out.println("User created.");
-                    }
+                    createAccount();
                 }
                 else if (option == 2)
                 {
+                //Login
                     System.out.println("Insert your information.");
                     String userNickname = console.readLine("Nickname: ");
                     String userPassword = console.readLine("Password: ");
@@ -74,63 +61,81 @@ class Main
                 }
                 else if (option == 3)
                 {
+                //Exit
                     break;
                 }
                 else
                 {
+                //Error
                     System.out.println("Try again.");
                 }
             }
             else
             {
+            //User logged
                 menuLogged();
-                int option = userInp.nextInt();
+                int option = userInput.nextInt();
 
                 if (option == 1)
                 {
+                //Send message to feed, user or community
                     sendMessage();
                 }
                 else if (option == 2)
                 {
-                    seeFeed();
+                //See user's feed
+                    userLogged.seeFeed(feed);
                 }
                 else if (option == 3)
                 {
-                    getMessages();
+                //See user's inbox
+                    userLogged.getMessages();
                 }
                 else if (option == 4)
                 {
-                    getProfileInfo();
+                //User's profile info
+                    userLogged.getInfo();
                 }
                 else if (option == 5)
                 {
-                    updateProfile();
+                //Update user's profile info
+                    userLogged.updateProfile();
                 }
                 else if (option == 6)
                 {
-                    addRemoveCommunity();
+                //create or remove community
+                    userLogged.addRemoveCommunity(communities);
                 }
                 else if (option == 7)
                 {
-                    addRemoveCommunityMembers();
+                //Add or remove community members
+                    userLogged.manageCommunity(communities);
                 }
                 else if(option == 8)
                 {
-                    getComMessages();
+                //See community messages
+                    userLogged.getComMessages(communities);
                 }
                 else if (option == 9)
                 {
+                //Add or remove friends
                     addRemoveFriend();
                 }
                 else if (option == 10)
                 {
-                    deleteUser(isLogged);
+                //Delete account
+                    deleteAccount(isLogged);
                 }
                 else if (option == 11)
                 {
+                //Exit
                     System.out.println("Logging out...");
                     isLogged = !isLogged;
                     userLogged = null;
+                }
+                else if (option == 12)
+                {
+                    System.out.println(userLogged.getNick());
                 }
                 else
                 {
@@ -140,111 +145,98 @@ class Main
         }
     }
 
-    public static void getMessages()
+    public static boolean findUser(String nickname, ArrayList<Account> users)
     {
-        for(Message message: userLogged.inbox)
+        for (Account user: users)
         {
-            System.out.println(message.author.nickname + ": " + message.message + "\n"); 
-        }
-    }
-
-    public static void getComMessages()
-    {
-        Console console = System.console();
-        String comName = console.readLine("Type your community name: ");
-        Community com = findCommunity(comName, communities);
-
-        if (com != null)
-        {
-            for(Message message: com.inbox)
+            if (user.getNick().equals(nickname))
             {
-                System.out.println(message.author.nickname + ": " + message.message + "\n"); 
+                return true;
             }
         }
-        else
-        {
-            System.out.println("Community not found");
-        }
+        return false;
     }
 
-    public static void addRemoveCommunityMembers()
+    public static Account getUser(String nickname, ArrayList<Account> users)
     {
-        System.out.println("1. Check invites\n2. Remove members\n");
+        Account searchedUser = null;
+        {
+            for (Account user: users)
+            {
+                if (user.getNick().equals(nickname))
+                {
+                    searchedUser = user;
+                    return searchedUser;
+                }
+            }
+    
+            return searchedUser;
+        } 
+    }
+
+    public static Community getCommunity(String comName, ArrayList<Community> communities)
+    {
+        Community searchedCom = null;
+
+        for(Community community: communities)
+        {
+            if(community.comName().equals(comName))
+            {
+                searchedCom = community;
+                return searchedCom;
+            }
+        }
+
+        return searchedCom;
+    }
+
+    public static void sendMessage()
+    {
         Console console = System.console();
-        Scanner userInp = new Scanner(System.in);
-        int sub_option = userInp.nextInt();
+        
+        System.out.println("1. To a user\n2. To a community\n3. News Feed");
+        Scanner userInput = new Scanner(System.in);
+        int sub_option = userInput.nextInt();
 
         if (sub_option == 1)
         {
-            String comName = console.readLine("Type your community name: ");
-            Community com = findCommunity(comName, communities);
+            //Message to a user
+            String destination = console.readLine("Insert the nickname of the user you want to send a message: ");
 
-            if (com != null)
+            if(findUser(destination, users))
             {
-                com.addMember(userLogged);
+                String text = console.readLine("Write your message: ");
+                Message message = new Message(userLogged, text);
+                Account destinyUser = getUser(destination, users);
+                destinyUser.inbox.add(message);
+                System.out.println("Message sent");
             }
             else
             {
-                System.out.println("Community not found");
-            }
-        }
-        if (sub_option == 2)
-        {
-            String comName = console.readLine("Type your community name: ");
-            Community com = findCommunity(comName, communities);
-
-            if (com != null)
-            {
-                com.removeMember(userLogged);
-            }
-            else
-            {
-                System.out.println("Community not found");
-            }
-        }
-    }
-
-    public static void addRemoveCommunity()
-    {
-        System.out.println("1. Join a community\n2. Create a community");
-
-        Console console = System.console();
-        Scanner userInp = new Scanner(System.in);
-        int sub_option = userInp.nextInt();
-
-        if(sub_option == 1)
-        {
-            String comName = console.readLine("Community name: ");
-            Community com = findCommunity(comName, communities);
-
-            if(com != null)
-            {
-                com.invites.add(userLogged);
-                com.communityInfo();
-            }
-            else
-            {
-                System.out.println("Community not found");
+                System.out.println("User not found.");
             }
         }
         else if (sub_option == 2)
         {
-            String newComName = console.readLine("New community name: ");
-            Community checkCom = findCommunity(newComName, communities);
+            //Message to a community
+            String destination = console.readLine("Insert the name of the community you want to send a message: ");
+            Community com = getCommunity(destination, communities);
 
-            if(checkCom != null)
+            if (com != null)
             {
-                System.out.println("This group was already created");
+                String text = console.readLine("Write your message: ");
+                Message message = new Message(userLogged, text);
+                com.inbox.add(message);
+                System.out.println("Message sent to community");
             }
             else
             {
-                String newComDesc = console.readLine("New community description: ");
-                Community newCom = new Community(newComName, newComDesc, userLogged);
-
-                newCom.members.add(userLogged);
-                newCom.communityInfo();
-                communities.add(newCom);
+                System.out.println("Community not found.");
             }
+        }
+        else if (sub_option == 3)
+        {
+            userLogged.sendMessagetoFeed(feed);
         }
         else
         {
@@ -255,10 +247,10 @@ class Main
     public static void addRemoveFriend()
     {
         System.out.println("1. See invites\n2. Add a friend");
-        Scanner userInp = new Scanner(System.in);
+        Scanner userInput = new Scanner(System.in);
         Console console = System.console();
 
-        int sub_option = userInp.nextInt();
+        int sub_option = userInput.nextInt();
 
         if (sub_option == 1)
         {
@@ -284,47 +276,28 @@ class Main
         }
     }
 
-    public static void getProfileInfo()
+    public static void createAccount()
     {
         Console console = System.console();
-        String userNickname = console.readLine("User nickname: ");
+
+        System.out.println("Creating account");
+        String userName = console.readLine("Insert your name: ");
+        String userNickname = console.readLine("Insert your a nickname: ");
+        String userPassword = console.readLine("Insert your password: ");
 
         if(findUser(userNickname, users))
         {
-            Account user = getUser(userNickname, users);
-            if (user != null)
-            {
-                user.getInfo();
-            }
-            else
-            {
-                System.out.println("This user doesn't have a profile.");
-            }
+            System.out.println("This user was already created.");
         }
         else
         {
-            System.out.println("User not found.");
-        }
+            Account newUser = new Account(userName, userPassword, userNickname);
+            users.add(newUser);
+            System.out.println("User created.");
+        } 
     }
 
-    public static void updateProfile()
-    {
-        Console console = System.console();
-        String city = console.readLine("Please, insert your birth city: ");
-        String birthday = console.readLine("Please, insert your birthday following the template DD-MM-YYYY: ");
-
-        if(userLogged.profile != null)
-        {
-            userLogged.profile.updateProfile(city, birthday);
-        }
-        else
-        {
-            userLogged.profile = new Profile(userLogged.nickname, city, birthday);
-            System.out.println("Profile created.");
-        }
-    }
-
-    public static void deleteUser(boolean isLogged)
+    public static void deleteAccount(boolean isLogged)
     {
         Console console = System.console();
         System.out.println("This action cannot be undone. Are you sure?");
@@ -334,21 +307,21 @@ class Main
         {
             userLogged.friends.clear();
 
-            for(Community com: userLogged.userCommunites)
+            for(Community community: userLogged.userCommunites)
             {
                 //User is owner of a group
-                if(com.comOwner.nickname.equals(userLogged.nickname))
+                if(community.admin.getNick().equals(userLogged.getNick()))
                 {
-                    for(Account user: com.members)
+                    for(Account user: community.members)
                     {
-                        user.userCommunites.remove(com);
+                        user.userCommunites.remove(community);
                     }
 
-                    communities.remove(com);
+                    communities.remove(community);
                 }
                 else
                 {
-                    com.members.remove(userLogged);
+                    community.members.remove(userLogged);
                 }
             }
 
@@ -360,134 +333,6 @@ class Main
         {
             System.out.println("Operation cancelled.");
         }
-    }
-
-    public static void sendMessage()
-    {
-        Console console = System.console();
-        
-        System.out.println("1. To a user\n2. To a community\n3. News Feed");
-        Scanner userInp = new Scanner(System.in);
-        int sub_option = userInp.nextInt();
-
-        if (sub_option == 1)
-        {
-            //Message to a user
-            String destination = console.readLine("Insert the nickname of the user you want to send a message: ");
-
-            if(findUser(destination, users))
-            {
-                String text = console.readLine("Write your message: ");
-                Message message = new Message(userLogged, text);
-                Account destinyUser = getUser(destination, users);
-                destinyUser.inbox.add(message);
-                System.out.println("Message sent");
-            }
-            else
-            {
-                System.out.println("User not found.");
-            }
-        }
-        else if (sub_option == 2)
-        {
-            //Message to a community
-            String destination = console.readLine("Insert the name of the community you want to send a message: ");
-            Community com = findCommunity(destination, communities);
-
-            if (com != null)
-            {
-                String text = console.readLine("Write your message: ");
-                Message message = new Message(userLogged, text);
-                com.inbox.add(message);
-                System.out.println("Message sent to community");
-            }
-            else
-            {
-                System.out.println("Community not found.");
-            }
-        }
-        else if (sub_option == 3)
-        {
-            //Message to feed
-            String text = console.readLine("Write your message: ");
-            Message message = new Message(userLogged, text);
-            feed.add(message);
-            System.out.println("Message sent to feed");
-        }
-        else
-        {
-            System.out.println("Insert valid option.");
-        }
-    }
-
-    public static void seeFeed()
-    {
-        boolean feedOpt = userLogged.feedVisibility();
-        if (feedOpt == true)
-        {
-            for(Message message: feed)
-            {
-                for(Account friend: userLogged.friends)
-                {
-                    if(message.author.getNick().equals(friend.nickname))
-                    {
-                        System.out.println(message.author.nickname + ": " + message.message + "\n");
-                    }
-                }
-            }
-        }
-        else
-        {
-            for(Message message: feed)
-            {
-                System.out.println(message.author.nickname + ": " + message.message + "\n");
-            }
-        }
-    }
-
-    public static boolean findUser(String nickname, ArrayList<Account> users)
-    {
-        for (Account user: users)
-        {
-            if (user.getNick().equals(nickname))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static Community findCommunity(String comName, ArrayList<Community> communities)
-    {
-        Community searchedCom = null;
-
-        for(Community community: communities)
-        {
-            if(community.comName().equals(comName))
-            {
-                searchedCom = community;
-                return searchedCom;
-            }
-        }
-
-        return searchedCom;
-    }
-
-    public static Account getUser(String nickname, ArrayList<Account> users)
-    {
-        Account searchedUser = null;
-        {
-            for (Account user: users)
-            {
-                if (user.getNick().equals(nickname))
-                {
-                    searchedUser = user;
-                    return searchedUser;
-                }
-            }
-    
-            return searchedUser;
-        } 
     }
 
     public static void menuNotLogged()
@@ -510,8 +355,8 @@ class Main
             "4. Recover user information\n" +
             "5. Edit profile\n" +
             "6. Join/Create a community\n" + 
-            "7. Add/Remove community members\n" +
-            "8. Group messages\n" +
+            "7. Manage communities\n" +
+            "8. Community messages\n" +
             "9. Add friends\n" +
             "10. Remove account\n" +
             "11. Log out");

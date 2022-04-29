@@ -1,19 +1,34 @@
 import java.util.ArrayList;
 import java.io.Console;
+import java.util.Scanner;
 
 class Account
 {
-    String name;
-    String password;
-    String nickname;
-    Profile profile = null;
-    boolean onlyFriends = false;
+    private String name;
+    private String password;
+    private String nickname;
 
-    ArrayList<Account> invites = new ArrayList<Account>();
-    ArrayList<Account> friends = new ArrayList<Account>();
-    ArrayList<Message> inbox = new ArrayList<Message>();
-    ArrayList<Community> userCommunites = new ArrayList<Community>();
-    public static ArrayList<Message> feed = new ArrayList<Message>();
+    private Profile profile;
+    private Admin admin;
+    private boolean onlyFriends = false;
+
+    public ArrayList<Account> invites = new ArrayList<Account>();
+    public ArrayList<Account> friends = new ArrayList<Account>();
+    public ArrayList<Message> inbox = new ArrayList<Message>();
+    public ArrayList<Community> userCommunites = new ArrayList<Community>();
+    public ArrayList<Message> feed = new ArrayList<Message>();
+
+    public Account(String nickname, ArrayList<Community> userCommunites)
+    {
+        this.nickname = nickname;
+        this.userCommunites = userCommunites;
+    }
+
+    public Account(String name, String nickname)
+    {
+        this.name = name;
+        this.nickname = nickname;
+    }    
 
     public Account(String name, String password, String nickname)
     {
@@ -32,6 +47,22 @@ class Account
         return password;
     }
 
+    public static Community getCommunity(String comName, ArrayList<Community> communities)
+    {
+        Community searchedCom = null;
+
+        for(Community community: communities)
+        {
+            if(community.comName().equals(comName))
+            {
+                searchedCom = community;
+                return searchedCom;
+            }
+        }
+
+        return searchedCom;
+    }
+
     public void getInfo()
     {
         if(profile == null)
@@ -40,28 +71,22 @@ class Account
         }
         else
         {
-            System.out.println("Name: " + this.name + "\n"
-            + "Friends: " + friends.size() + "\n"
-            + "City: " + this.profile.city + "\n"
-            + "Birthday: " + this.profile.birthday + "\n");
+            int numberFriends = friends.size();
+            profile.getInfo(numberFriends);
         }
     }
 
-    public boolean feedVisibility()
+    public void updateProfile()
     {
-        Console console = System.console();
-        System.out.println("Your feed visibility is: " + this.onlyFriends);
-        String option = console.readLine("Change feed vilibility to only-friends (O) or whole feed (F): ");
-
-        if(option.equals("O"))
+        if(this.profile != null)
         {
-            this.onlyFriends = true;
-            return true;
+            this.profile.updateProfile();
         }
         else
         {
-            this.onlyFriends = false;
-            return false;
+            this.profile = new Profile(this.name, this.nickname);
+            this.profile.updateProfile();
+            System.out.println("Profile created.");
         }
     }
 
@@ -89,5 +114,155 @@ class Account
             }
         }
         this.invites.clear();
+    }
+
+    public boolean feedVisibility()
+    {
+        Console console = System.console();
+        System.out.println("Your feed visibility is: " + this.onlyFriends);
+        String option = console.readLine("Change feed vilibility to only-friends (O) or whole feed (F): ");
+
+        if(option.equals("O"))
+        {
+            this.onlyFriends = true;
+            return true;
+        }
+        else
+        {
+            this.onlyFriends = false;
+            return false;
+        }
+    }
+
+    public void seeFeed(ArrayList<Message> feed)
+    {
+        if (feed.isEmpty())
+        {
+            System.out.println("The feed is empty.");
+        }
+        else
+        {
+            boolean feedOpt = this.feedVisibility();
+            if (feedOpt == true)
+            {
+                for(Message message: feed)
+                {
+                    for(Account friend: this.friends)
+                    {
+                        if(message.author.getNick().equals(friend.nickname))
+                        {
+                            System.out.println(message.author.nickname + ": " + message.message + "\n");
+                        }
+                    }
+                }
+            }
+            else
+            {
+                for(Message message: feed)
+                {
+                    System.out.println(message.author.nickname + ": " + message.message + "\n");
+                }
+            }
+        }
+    }
+
+    public void sendMessagetoFeed(ArrayList<Message> feed)
+    {
+        //Message to feed
+        Console console = System.console();
+        String text = console.readLine("Write your message: ");
+        Message message = new Message(this, text);
+        feed.add(message);
+        System.out.println("Message sent to feed");
+    }
+
+    public void getMessages()
+    {
+        for(Message message: inbox)
+        {
+            System.out.println(message.author.nickname + ": " + message.message); 
+        }
+
+        this.inbox.clear();
+    }
+
+    public void manageCommunity(ArrayList<Community> communities)
+    {
+        if (admin != null)
+        {
+            admin.addRemoveCommunityMembers(communities);
+        }
+        else
+        {
+            System.out.println("You are not a community administrator.");
+        }
+    }
+
+    public void addRemoveCommunity(ArrayList<Community> communities)
+    {
+        System.out.println("1. Join a community\n2. Create a community");
+
+        Console console = System.console();
+        Scanner userInput = new Scanner(System.in);
+        int sub_option = userInput.nextInt();
+
+        if(sub_option == 1)
+        {
+            String communityName = console.readLine("Community name: ");
+            Community com = getCommunity(communityName, communities);
+
+            if(com != null)
+            {
+                com.invites.add(this);
+                com.communityInfo();
+            }
+            else
+            {
+                System.out.println("Community not found");
+            }
+        }
+        else if (sub_option == 2)
+        {
+            String newCommunityName = console.readLine("New community name: ");
+            Community checkCom = getCommunity(newCommunityName, communities);
+
+            if(checkCom != null)
+            {
+                System.out.println("This group was already created");
+            }
+            else
+            {
+                String newComDesc = console.readLine("New community description: ");
+                this.admin = new Admin(this.nickname, userCommunites);
+                Community newCom = new Community(newCommunityName, newComDesc, admin);
+
+                newCom.members.add(this);
+                newCom.communityInfo();
+                communities.add(newCom);
+            }
+        }
+        else
+        {
+            System.out.println("Insert valid option.");
+        }
+    }
+
+    public void getComMessages(ArrayList<Community> communities)
+    {
+        Console console = System.console();
+        String communityName = console.readLine("Type your community name: ");
+        Community com = getCommunity(communityName, communities);
+
+        if (com != null)
+        {
+            for(Message message: com.inbox)
+            {
+                System.out.println(message.author.nickname + ": " + message.message); 
+            }
+        }
+        else
+        {
+            System.out.println("Community not found");
+        }
     }
 }
