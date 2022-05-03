@@ -21,125 +21,138 @@ class Main
             if (!isLogged)
             {
                 menuNotLogged();
-                int option = userInput.nextInt();
-
-                if (option == 1)
-                //Create a account
+                try
                 {
-                    createAccount();
-                }
-                else if (option == 2)
-                {
-                //Login
-                    System.out.println("Insert your information.");
-                    String userNickname = console.readLine("Nickname: ");
-                    String userPassword = console.readLine("Password: ");
+                    int option = userInput.nextInt();
 
-                    if(findUser(userNickname, users))
+                    if (option == 1)
+                    //Create a account
                     {
-                        if(validateLogin(userNickname, userPassword, users))
-                        {
-                            isLogged = !isLogged;
+                        createAccount();
+                    }
+                    else if (option == 2)
+                    {
+                    //Login
+                        System.out.println("Insert your information.");
+                        String userNickname = console.readLine("Nickname: ");
+                        String userPassword = console.readLine("Password: ");
 
-                                for(User user: users)
-                                {
-                                    if(user.getNick().equals(userNickname))
+                        if(findUser(userNickname, users))
+                        {
+                            if(validateLogin(userNickname, userPassword, users))
+                            {
+                                isLogged = !isLogged;
+
+                                    for(User user: users)
                                     {
-                                        userLogged = user;
+                                        if(user.getNick().equals(userNickname))
+                                        {
+                                            userLogged = user;
+                                        }
                                     }
-                                }
+                            }
+                            else
+                            {
+                                System.out.println("The password is incorrect.");
+                            }
                         }
                         else
                         {
-                            System.out.println("The password is incorrect.");
+                            System.out.println("User doesn't exists. Try again or create a new account.");
                         }
+                    }
+                    else if (option == 3)
+                    {
+                    //Exit
+                        break;
                     }
                     else
                     {
-                        System.out.println("User doesn't exists. Try again or create a new account.");
+                    //Error
+                        System.out.println("Try again.");
                     }
                 }
-                else if (option == 3)
+                catch (Exception InputMismatchException)
                 {
-                //Exit
-                    break;
-                }
-                else
-                {
-                //Error
-                    System.out.println("Try again.");
+                    System.out.println("Invalid option.");
+                    userInput.nextLine();
                 }
             }
             else
             {
-            //User logged
-                menuLogged();
-                int option = userInput.nextInt();
+                //User logged
+                try
+                {
+                    menuLogged();
+                    int option = userInput.nextInt();
 
-                if (option == 1)
-                {
-                //Send message to feed, user or community
-                    sendMessage();
+                    if (option == 1)
+                    {
+                    //Send message to feed, user or community
+                        sendMessage();
+                    }
+                    else if (option == 2)
+                    {
+                    //See user's feed
+                        userLogged.seeFeed(feed);
+                    }
+                    else if (option == 3)
+                    {
+                    //See user's inbox
+                        userLogged.getMessages();
+                    }
+                    else if (option == 4)
+                    {
+                    //User's profile info
+                        userLogged.getInfo();
+                    }
+                    else if (option == 5)
+                    {
+                    //Update user's profile info
+                        userLogged.updateProfile();
+                    }
+                    else if (option == 6)
+                    {
+                    //create or remove community
+                        userLogged.addRemoveCommunity(communities);
+                    }
+                    else if (option == 7)
+                    {
+                    //Add or remove community members
+                        userLogged.manageCommunity(communities);
+                    }
+                    else if(option == 8)
+                    {
+                    //See community messages
+                        userLogged.getComMessages(communities);
+                    }
+                    else if (option == 9)
+                    {
+                    //Add or remove friends
+                        addRemoveFriend();
+                    }
+                    else if (option == 10)
+                    {
+                    //Delete account
+                        deleteAccount(isLogged);
+                    }
+                    else if (option == 11)
+                    {
+                    //Exit
+                        System.out.println("Logging out...");
+                        isLogged = !isLogged;
+                        userLogged = null;
+                    }
+                    else
+                    {
+                        System.out.println("Option not found. Try again.");
+                    }
+                    
                 }
-                else if (option == 2)
+                catch (Exception InputMismatchException)
                 {
-                //See user's feed
-                    userLogged.seeFeed(feed);
-                }
-                else if (option == 3)
-                {
-                //See user's inbox
-                    userLogged.getMessages();
-                }
-                else if (option == 4)
-                {
-                //User's profile info
-                    userLogged.getInfo();
-                }
-                else if (option == 5)
-                {
-                //Update user's profile info
-                    userLogged.updateProfile();
-                }
-                else if (option == 6)
-                {
-                //create or remove community
-                    userLogged.addRemoveCommunity(communities);
-                }
-                else if (option == 7)
-                {
-                //Add or remove community members
-                    userLogged.manageCommunity(communities);
-                }
-                else if(option == 8)
-                {
-                //See community messages
-                    userLogged.getComMessages(communities);
-                }
-                else if (option == 9)
-                {
-                //Add or remove friends
-                    addRemoveFriend();
-                }
-                else if (option == 10)
-                {
-                //Delete account
-                    deleteAccount(isLogged);
-                }
-                else if (option == 11)
-                {
-                //Exit
-                    System.out.println("Logging out...");
-                    isLogged = !isLogged;
-                    userLogged = null;
-                }
-                else if (option == 12)
-                {
-                    System.out.println(userLogged.getNick());
-                }
-                else
-                {
-                    System.out.println("Try again.");
+                    System.out.println("Invalid option.");
+                    userInput.nextLine();
                 }
             }
         }
@@ -194,7 +207,7 @@ class Main
     {
         Console console = System.console();
         
-        System.out.println("1. To a user\n2. To a community\n3. News Feed");
+        System.out.println("1. To a user\n2. To a community\n3. To the feed");
         Scanner userInput = new Scanner(System.in);
         int sub_option = userInput.nextInt();
 
@@ -348,7 +361,7 @@ class Main
     {
 
         System.out.println("------------------------------");
-        System.out.println("MENU");  
+        System.out.println("Select one option bellow:");  
         System.out.println("1. Send a message\n" +
             "2. See feed\n" +
             "3. See inbox\n" +
