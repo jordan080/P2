@@ -1,9 +1,9 @@
 class Message 
 {
     String message;
-    Account author;
+    User author;
 
-    public Message(Account author, String message)
+    public Message(User author, String message)
     {
         this.author = author;
         this.message = message;

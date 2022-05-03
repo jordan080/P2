@@ -2,7 +2,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.io.Console;
 
-public class Profile extends Account 
+public class Profile extends User 
 {
     private String name;
     private String nickname;

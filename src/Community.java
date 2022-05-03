@@ -7,8 +7,8 @@ class Community
     String description;
     Admin admin;
 
-    ArrayList<Account> invites = new ArrayList<Account>();
-    ArrayList<Account> members = new ArrayList<Account>();
+    ArrayList<User> invites = new ArrayList<User>();
+    ArrayList<User> members = new ArrayList<User>();
     ArrayList<Message> inbox = new ArrayList<Message>();
 
     public Community(String name, String description, Admin owner)
@@ -24,11 +24,11 @@ class Community
         return name;
     }
 
-    public void addMember(Account user)
+    public void addMember(User user)
     {
         Console console = System.console();
 
-        for(Account inviter: invites)
+        for(User inviter: invites)
         {
             String option = console.readLine(inviter.getNick() + " wants to join your group. Do you accept? ");
 
@@ -49,12 +49,12 @@ class Community
         invites.clear();
     }   
 
-    public void removeMember(Account user)
+    public void removeMember(User user)
     {
         Console console = System.console();
         String option = console.readLine("Nickname of the user to be removed: ");
 
-        for(Account member: members)
+        for(User member: members)
         {
             if(member.getNick().equals(option))
             {
@@ -71,7 +71,7 @@ class Community
         System.out.println("Total members: " + members.size());
         System.out.println("Invites to join the community: " + invites.size());
 
-        for(Account user: members)
+        for(User user: members)
             System.out.println("User: " + user.getNick());
     }
 }

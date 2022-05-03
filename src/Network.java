@@ -4,14 +4,14 @@ class Network
 {
     private ArrayList<Community> communities = new ArrayList<Community>();
     private ArrayList<Message> feed = new ArrayList<Message>();
-    private ArrayList<Account> users = new ArrayList<Account>(); 
+    private ArrayList<User> users = new ArrayList<User>(); 
 
     public Network()
     {
   
     }
 
-    public ArrayList<Account> getUsers()
+    public ArrayList<User> getUsers()
     {
         return users;
     }

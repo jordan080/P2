@@ -4,9 +4,9 @@ import java.util.Scanner;
 
 class Main
 {
-    static Account userLogged = null;
+    static User userLogged = null;
     static Network iFace = new Network();
-    static ArrayList<Account> users = iFace.getUsers();
+    static ArrayList<User> users = iFace.getUsers();
     static ArrayList<Community> communities = iFace.getComs();
     static ArrayList<Message> feed = iFace.getFeed();
 
@@ -41,7 +41,7 @@ class Main
                         {
                             isLogged = !isLogged;
 
-                                for(Account user: users)
+                                for(User user: users)
                                 {
                                     if(user.getNick().equals(userNickname))
                                     {
@@ -145,9 +145,9 @@ class Main
         }
     }
 
-    public static boolean findUser(String nickname, ArrayList<Account> users)
+    public static boolean findUser(String nickname, ArrayList<User> users)
     {
-        for (Account user: users)
+        for (User user: users)
         {
             if (user.getNick().equals(nickname))
             {
@@ -157,11 +157,11 @@ class Main
         return false;
     }
 
-    public static Account getUser(String nickname, ArrayList<Account> users)
+    public static User getUser(String nickname, ArrayList<User> users)
     {
-        Account searchedUser = null;
+        User searchedUser = null;
         {
-            for (Account user: users)
+            for (User user: users)
             {
                 if (user.getNick().equals(nickname))
                 {
@@ -207,7 +207,7 @@ class Main
             {
                 String text = console.readLine("Write your message: ");
                 Message message = new Message(userLogged, text);
-                Account destinyUser = getUser(destination, users);
+                User destinyUser = getUser(destination, users);
                 destinyUser.inbox.add(message);
                 System.out.println("Message sent");
             }
@@ -262,7 +262,7 @@ class Main
 
             if(findUser(friendNick, users))
             {
-                Account invitedUser = getUser(friendNick, users);
+                User invitedUser = getUser(friendNick, users);
                 invitedUser.invites.add(userLogged);
             }
             else
@@ -291,7 +291,7 @@ class Main
         }
         else
         {
-            Account newUser = new Account(userName, userPassword, userNickname);
+            User newUser = new User(userName, userPassword, userNickname);
             users.add(newUser);
             System.out.println("User created.");
         } 
@@ -312,7 +312,7 @@ class Main
                 //User is owner of a group
                 if(community.admin.getNick().equals(userLogged.getNick()))
                 {
-                    for(Account user: community.members)
+                    for(User user: community.members)
                     {
                         user.userCommunites.remove(community);
                     }
@@ -365,13 +365,13 @@ class Main
 
     }
 
-    public static boolean validateLogin(String userNickname, String userPassword, ArrayList<Account> users)
+    public static boolean validateLogin(String userNickname, String userPassword, ArrayList<User> users)
     {
         int result = 0;
 
         for (int i = 0; i < users.size(); i++)
         {
-            Account user = users.get((i));
+            User user = users.get((i));
 
             if(user.getNick().equals(userNickname))
             {

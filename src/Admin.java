@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.io.Console;
 import java.util.Scanner;
 
-public class Admin extends Account
+public class Admin extends User
 {
     private String nickname;
     public ArrayList<Community> userCommunites = new ArrayList<Community>();
