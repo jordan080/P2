@@ -11,6 +11,6 @@
 9) Envio de Mensagens no feed de noticias (Implementado)
 10) Controle de visualização do filtro de notícias (Implementado)
 
-Executando o sistema:
--Compile o arquivo Main.java
--Execute o arquivo Main gerado
+Executando o sistema:<br/>
+- Compile o arquivo Main.java<br/>
+- Execute o arquivo Main gerado<br/>
