@@ -72,7 +72,8 @@ class User
         else
         {
             int numberFriends = friends.size();
-            profile.getInfo(numberFriends);
+            int numberComs = userCommunites.size();
+            profile.getInfo(numberFriends, numberComs);
         }
     }
 
@@ -99,7 +100,7 @@ class User
         {
             System.out.println(sentInvite.nickname + " wants to be your friend.");
             String answer = console.readLine("Do you accept? ");
-            System.out.println(answer);
+            //System.out.println(answer);
 
             if (answer.equals("Yes") || answer.equals("Y") || answer.equals("yes"))
             {
@@ -120,7 +121,7 @@ class User
     {
         Console console = System.console();
         System.out.println("Your feed visibility is: " + this.onlyFriends);
-        String option = console.readLine("Change feed vilibility to only-friends (O) or whole feed (F): ");
+        String option = console.readLine("Change feed visibility to only-friends (O) or whole feed (F): ");
 
         if(option.equals("O"))
         {
@@ -151,7 +152,7 @@ class User
                     {
                         if(message.author.getNick().equals(friend.nickname))
                         {
-                            System.out.println(message.author.nickname + ": " + message.message + "\n");
+                            System.out.println(message.author.nickname + ": " + message.message);
                         }
                     }
                 }
@@ -160,7 +161,7 @@ class User
             {
                 for(Message message: feed)
                 {
-                    System.out.println(message.author.nickname + ": " + message.message + "\n");
+                    System.out.println(message.author.nickname + ": " + message.message);
                 }
             }
         }
@@ -237,6 +238,7 @@ class User
                 Community newCom = new Community(newCommunityName, newComDesc, admin);
 
                 newCom.members.add(this);
+                userCommunites.add(newCom);
                 newCom.communityInfo();
                 communities.add(newCom);
             }

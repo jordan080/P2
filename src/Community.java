@@ -30,7 +30,7 @@ class Community
 
         for(User inviter: invites)
         {
-            String option = console.readLine(inviter.getNick() + " wants to join your group. Do you accept? ");
+            String option = console.readLine(inviter.getNick() + " wants to join your community. Do you accept? ");
 
             if(option.equals("Yes") || option.equals("yes") || option.equals("y"))
             {
