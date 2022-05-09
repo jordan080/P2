@@ -26,12 +26,13 @@ public class Profile extends User
         bDay = LocalDate.parse(birthday, parser);
     }
     
-    public void getInfo(int numberFriends)
+    public void getInfo(int numberFriends, int numberComs)
     {
         System.out.println("Name: " + this.name + "\n"
         + "Nickname: " + this.nickname + "\n"
         + "Friends: " + numberFriends + "\n"
         + "City: " + this.city + "\n"
+        + "Communities: " + numberComs + "\n"
         + "Date of Birth: " + parser.format(bDay));
     }
 }

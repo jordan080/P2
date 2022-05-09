@@ -134,7 +134,7 @@ class Main
                     else if (option == 10)
                     {
                     //Delete account
-                        deleteAccount(isLogged);
+                        isLogged = deleteAccount(isLogged);
                     }
                     else if (option == 11)
                     {
@@ -310,42 +310,57 @@ class Main
         } 
     }
 
-    public static void deleteAccount(boolean isLogged)
+    public static boolean deleteAccount(boolean isLogged)
     {
         Console console = System.console();
         System.out.println("This action cannot be undone. Are you sure?");
         String answer = console.readLine();
+        System.out.println("a");
 
-        if (answer == "Yes" || answer == "yes" || answer == "y")
+
+        if (answer.equals("Yes") || answer.equals("yes") || answer.equals("y"))
         {
+            System.out.println("b");
             userLogged.friends.clear();
 
             for(Community community: userLogged.userCommunites)
             {
-                //User is owner of a group
+                System.out.println("c");
+                //User is owner of a community
                 if(community.admin.getNick().equals(userLogged.getNick()))
                 {
+                    System.out.println(community.admin.getNick());
                     for(User user: community.members)
                     {
                         user.userCommunites.remove(community);
                     }
-
+                    
                     communities.remove(community);
+                    users.remove(userLogged);
+                    userLogged = null;
+                    isLogged = !isLogged;
+                    System.out.println("e");
+                    return isLogged;
                 }
                 else
                 {
+                    System.out.println("d");
                     community.members.remove(userLogged);
                 }
             }
-
+            
             users.remove(userLogged);
             userLogged = null;
             isLogged = !isLogged;
+            System.out.println("e");
         }
-        else if (answer == "No" || answer == "no" || answer == "n")
+        else if (answer.equals("No") || answer.equals("no") || answer.equals("n"))
         {
             System.out.println("Operation cancelled.");
         }
+
+        System.out.println("g");
+        return isLogged;
     }
 
     public static void menuNotLogged()
