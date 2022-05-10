@@ -1,11 +1,21 @@
-class Message 
+class Message
 {
-    String message;
-    User author;
+    private String message;
+    private String userNick;
 
-    public Message(User author, String message)
+    public Message(String userNick, String message)
     {
-        this.author = author;
+        this.userNick = userNick;
         this.message = message;
+    }
+
+    public String getAuthor()
+    {
+        return userNick;
+    }
+
+    public String getMessage()
+    {
+        return message;
     }
 }

@@ -3,8 +3,8 @@ import java.io.Console;
 
 class Community
 {
-    String name;
-    String description;
+    private String name;
+    private String description;
     Admin admin;
 
     ArrayList<User> invites = new ArrayList<User>();
@@ -19,7 +19,7 @@ class Community
         owner.userCommunites.add(this);
     }
 
-    public String comName()
+    public String getComName()
     {
         return name;
     }
@@ -68,10 +68,22 @@ class Community
 
     public void communityInfo()
     {
-        System.out.println("Total members: " + members.size());
-        System.out.println("Invites to join the community: " + invites.size());
+        System.out.println("Name: " + name + "\n"
+                            + "Description: " + description + "\n"
+                            + "Total members: " + members.size() + "\n"
+                            + "Invites to join the community: " + invites.size());
 
+        System.out.println("Users:");
         for(User user: members)
-            System.out.println("User: " + user.getNick());
+        {
+            if (user.getNick().equals(admin.getNick()))
+            {
+                System.out.println(user.getNick() + " (adm)");
+            }
+            else
+            {
+                System.out.println(user.getNick());
+            }
+        }
     }
 }

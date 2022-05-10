@@ -193,7 +193,7 @@ class Main
 
         for(Community community: communities)
         {
-            if(community.comName().equals(comName))
+            if(community.getComName().equals(comName))
             {
                 searchedCom = community;
                 return searchedCom;
@@ -219,7 +219,7 @@ class Main
             if(findUser(destination, users))
             {
                 String text = console.readLine("Write your message: ");
-                Message message = new Message(userLogged, text);
+                Message message = new Message(userLogged.getNick(), text);
                 User destinyUser = getUser(destination, users);
                 destinyUser.inbox.add(message);
                 System.out.println("Message sent");
@@ -238,7 +238,7 @@ class Main
             if (com != null)
             {
                 String text = console.readLine("Write your message: ");
-                Message message = new Message(userLogged, text);
+                Message message = new Message(userLogged.getNick(), text);
                 com.inbox.add(message);
                 System.out.println("Message sent to community");
             }

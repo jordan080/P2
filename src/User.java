@@ -53,7 +53,7 @@ class User
 
         for(Community community: communities)
         {
-            if(community.comName().equals(comName))
+            if(community.getComName().equals(comName))
             {
                 searchedCom = community;
                 return searchedCom;
@@ -150,9 +150,9 @@ class User
                 {
                     for(User friend: this.friends)
                     {
-                        if(message.author.getNick().equals(friend.nickname))
+                        if(message.getAuthor().equals(friend.nickname))
                         {
-                            System.out.println(message.author.nickname + ": " + message.message);
+                            System.out.println(message.getAuthor() + ": " + message.getMessage());
                         }
                     }
                 }
@@ -161,7 +161,7 @@ class User
             {
                 for(Message message: feed)
                 {
-                    System.out.println(message.author.nickname + ": " + message.message);
+                    System.out.println(message.getAuthor() + ": " + message.getMessage());
                 }
             }
         }
@@ -172,7 +172,7 @@ class User
         //Message to feed
         Console console = System.console();
         String text = console.readLine("Write your message: ");
-        Message message = new Message(this, text);
+        Message message = new Message(this.nickname, text);
         feed.add(message);
         System.out.println("Message sent to feed");
     }
@@ -181,7 +181,7 @@ class User
     {
         for(Message message: inbox)
         {
-            System.out.println(message.author.nickname + ": " + message.message); 
+            System.out.println(message.getAuthor() + ": " + message.getMessage()); 
         }
 
         this.inbox.clear();
@@ -215,7 +215,7 @@ class User
             if(com != null)
             {
                 com.invites.add(this);
-                com.communityInfo();
+                System.out.println("Invite to join community sent.");
             }
             else
             {
@@ -259,7 +259,7 @@ class User
         {
             for(Message message: com.inbox)
             {
-                System.out.println(message.author.nickname + ": " + message.message); 
+                System.out.println(message.getAuthor() + ": " + message.getMessage()); 
             }
         }
         else
