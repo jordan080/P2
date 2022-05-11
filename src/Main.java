@@ -315,17 +315,13 @@ class Main
         Console console = System.console();
         System.out.println("This action cannot be undone. Are you sure?");
         String answer = console.readLine();
-        System.out.println("a");
-
 
         if (answer.equals("Yes") || answer.equals("yes") || answer.equals("y"))
         {
-            System.out.println("b");
             userLogged.friends.clear();
 
             for(Community community: userLogged.userCommunites)
             {
-                System.out.println("c");
                 //User is owner of a community
                 if(community.admin.getNick().equals(userLogged.getNick()))
                 {
@@ -339,12 +335,10 @@ class Main
                     users.remove(userLogged);
                     userLogged = null;
                     isLogged = !isLogged;
-                    System.out.println("e");
                     return isLogged;
                 }
                 else
                 {
-                    System.out.println("d");
                     community.members.remove(userLogged);
                 }
             }
@@ -352,14 +346,12 @@ class Main
             users.remove(userLogged);
             userLogged = null;
             isLogged = !isLogged;
-            System.out.println("e");
         }
         else if (answer.equals("No") || answer.equals("no") || answer.equals("n"))
         {
             System.out.println("Operation cancelled.");
         }
 
-        System.out.println("g");
         return isLogged;
     }
 
