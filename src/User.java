@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.io.Console;
+import java.io.IOException;
 import java.util.Scanner;
 
 class User
@@ -65,15 +66,15 @@ class User
 
     public void getInfo()
     {
-        if(profile == null)
-        {
-            System.out.println("Profile is empty");
-        }
-        else
+        try
         {
             int numberFriends = friends.size();
             int numberComs = userCommunites.size();
-            profile.getInfo(numberFriends, numberComs);
+            profile.getInfo(numberFriends, numberComs);           
+        }
+        catch (Exception e)
+        {
+            System.out.println("Profile is empty.");
         }
     }
 
@@ -106,12 +107,12 @@ class User
             {
                 this.friends.add(sentInvite);
                 //this.invites.remove(sentInvite);
-                System.out.println("Friend added");
+                System.out.println("Friend added.");
             }
             else if (answer.equals("No") || answer.equals("N") || answer.equals("no"))
             {
                 //this.invites.remove(sentInvite);
-                System.out.println("Invite rejected");
+                System.out.println("Invite rejected.");
             }
         }
         this.invites.clear();
@@ -174,32 +175,38 @@ class User
         String text = console.readLine("Write your message: ");
         Message message = new Message(this.nickname, text);
         feed.add(message);
-        System.out.println("Message sent to feed");
+        System.out.println("Message sent to feed.");
     }
 
     public void getMessages()
     {
-        for(Message message: inbox)
+        if (this.inbox.isEmpty())
         {
-            System.out.println(message.getAuthor() + ": " + message.getMessage()); 
+            System.out.println("Inbox is empty.");
         }
-
-        this.inbox.clear();
+        else
+        {
+            for(Message message: inbox)
+            {
+                System.out.println(message.getAuthor() + ": " + message.getMessage()); 
+            }
+            this.inbox.clear();
+        }
     }
 
     public void manageCommunity(ArrayList<Community> communities)
     {
-        if (admin != null)
+        try
         {
             admin.addRemoveCommunityMembers(communities);
         }
-        else
+        catch (Exception e)
         {
             System.out.println("You are not a community administrator.");
         }
     }
 
-    public void addRemoveCommunity(ArrayList<Community> communities)
+    public void addRemoveCommunity(ArrayList<Community> communities) throws IOException
     {
         System.out.println("1. Join a community\n2. Create a community");
 
@@ -212,14 +219,14 @@ class User
             String communityName = console.readLine("Community name: ");
             Community com = getCommunity(communityName, communities);
 
-            if(com != null)
+            try
             {
                 com.invites.add(this);
                 System.out.println("Invite to join community sent.");
             }
-            else
+            catch (Exception e)
             {
-                System.out.println("Community not found");
+                System.out.println("Community not found.");
             }
         }
         else if (sub_option == 2)
@@ -229,7 +236,7 @@ class User
 
             if(checkCom != null)
             {
-                System.out.println("This group was already created");
+                System.out.println("This group was already created.");
             }
             else
             {
@@ -255,16 +262,16 @@ class User
         String communityName = console.readLine("Type your community name: ");
         Community com = getCommunity(communityName, communities);
 
-        if (com != null)
+        try
         {
             for(Message message: com.inbox)
             {
                 System.out.println(message.getAuthor() + ": " + message.getMessage()); 
             }
         }
-        else
+        catch (Exception e)
         {
-            System.out.println("Community not found");
+            System.out.println("Community not found.");
         }
     }
 }

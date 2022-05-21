@@ -24,11 +24,11 @@ public class Admin extends User
             String communityName = console.readLine("Type your community name: ");
             Community com = getCommunity(communityName, communities);
 
-            if (com != null)
+            try
             {
                 com.addMember(this);
             }
-            else
+            catch (Exception e)
             {
                 System.out.println("Community not found");
             }
@@ -38,11 +38,11 @@ public class Admin extends User
             String communityName = console.readLine("Type your community name: ");
             Community com = getCommunity(communityName, communities);
 
-            if (com != null)
+            try
             {
                 com.removeMember(this);
             }
-            else
+            catch (Exception e)
             {
                 System.out.println("Community not found");
             }
@@ -52,11 +52,11 @@ public class Admin extends User
             String communityName = console.readLine("Type your community name: ");
             Community com = getCommunity(communityName, communities);
 
-            if (com != null)
+            try
             {
                 com.communityInfo();
             }
-            else
+            catch (Exception e)
             {
                 System.out.println("Community not found");
             }
