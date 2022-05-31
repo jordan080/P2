@@ -11,6 +11,12 @@
 9) Envio de Mensagens no feed de noticias (Implementado)
 10) Controle de visualização do filtro de notícias (Implementado)
 
+# Excessões tratadas:
+- Dois usuários não podem ter o mesmo apelido
+- Não é possível achar/entrar em comunidades que não existem
+- Não é possível acessar um perfil vazio
+- 
+
 Executando o sistema:<br/>
 - Compile o arquivo Main.java<br/>
 - Execute o arquivo Main gerado<br/>
