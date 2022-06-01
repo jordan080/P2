@@ -1,3 +1,7 @@
+# Executando o sistema:
+- Compile o arquivo "Main.java"
+- Execute o arquivo "Main" gerado
+
 # Funcionalidades:
 
 1) Criação de Conta (Implementado)
@@ -19,7 +23,3 @@
 
 # Code Smells:
 - 
-
-Executando o sistema:<br/>
-- Compile o arquivo Main.java<br/>
-- Execute o arquivo Main gerado<br/>
