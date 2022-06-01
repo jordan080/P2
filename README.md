@@ -15,6 +15,8 @@
 - Dois usuários não podem ter o mesmo apelido
 - Não é possível achar/entrar em comunidades que não existem
 - Não é possível acessar um perfil vazio
+
+# Code Smells:
 - 
 
 Executando o sistema:<br/>
