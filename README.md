@@ -15,6 +15,7 @@
 - Dois usuários não podem ter o mesmo apelido
 - Não é possível achar/entrar em comunidades que não existem
 - Não é possível acessar um perfil vazio
+- Não é possível adicionar uma data de nascimento com formato inválido
 
 # Code Smells:
 - 
