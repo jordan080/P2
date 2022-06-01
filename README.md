@@ -18,8 +18,13 @@
 # Excessões tratadas:
 - Dois usuários não podem ter o mesmo apelido
 - Não é possível achar/entrar em comunidades que não existem
-- Não é possível acessar um perfil vazio
+- Não é possível entrar em contas que não existem
+- Não é possível acessar informações do perfil que não existem
 - Não é possível adicionar uma data de nascimento com formato inválido
+- Não é possível acessar uma opção do menu principal que não existe
 
 # Code Smells:
-- 
+- Construtores com código semelhante (Duplicated Code)
+- Vários if/else alinhados (Long Method)
+- Uma classe que tenta fazer muitas coisas (Large Class)
+- Comentários
