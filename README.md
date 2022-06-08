@@ -24,6 +24,7 @@
 - Não é possível acessar uma opção do menu principal que não existe
 
 # Code Smells:
+- Código duplicado (Duplicated Code) (Arquivos Main.java (197-210) e User.java (51-62))
 - Construtores com código semelhante (Duplicated Code) (Arquivo User.java, linhas 22-39)
 - Vários if/else alinhados (Long Method) (Arquivo Main.java, linhas 13-166)
 - Uma classe que tenta fazer muitas coisas (Large Class) (classe User)
