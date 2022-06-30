@@ -1,5 +1,6 @@
 import java.io.Console;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 class Main
@@ -28,14 +29,12 @@ class Main
                         int option = userInput.nextInt();
 
                         if (option == 1)
-                        //Create a account
                         {
                             createAccount();
                         }
                         else if (option == 2)
                         {
-                        //Login
-                            System.out.println("Insert your information.");
+                            System.out.println("Logging on the network.");
                             String userNickname = console.readLine("Nickname: ");
                             String userPassword = console.readLine("Password: ");
 
@@ -65,12 +64,11 @@ class Main
                         }
                         else if (option == 3)
                         {
-                        //Exit
+                            System.out.println("Exiting...");
                             break;
                         }
                         else
                         {
-                        //Error
                             System.out.println("Try again.");
                         }
                     }
@@ -82,7 +80,6 @@ class Main
                 }
                 else
                 {
-                    //User logged
                     try
                     {
                         menuLogged();
@@ -90,57 +87,46 @@ class Main
 
                         if (option == 1)
                         {
-                        //Send message to feed, user or community
                             sendMessage();
                         }
                         else if (option == 2)
                         {
-                        //See user's feed
                             userLogged.seeFeed(feed);
                         }
                         else if (option == 3)
                         {
-                        //See user's inbox
-                            userLogged.getMessages();
+                            userLogged.seeInbox();
                         }
                         else if (option == 4)
                         {
-                        //User's profile info
                             userLogged.getInfo();
                         }
                         else if (option == 5)
                         {
-                        //Update user's profile info
                             userLogged.updateProfile();
                         }
                         else if (option == 6)
                         {
-                        //create or remove community
                             userLogged.addRemoveCommunity(communities);
                         }
                         else if (option == 7)
                         {
-                        //Add or remove community members
                             userLogged.manageCommunity(communities);
                         }
                         else if(option == 8)
                         {
-                        //See community messages
-                            userLogged.getComMessages(communities);
+                            userLogged.seeCommunityMessages(communities);
                         }
                         else if (option == 9)
                         {
-                        //Add or remove friends
                             addRemoveFriend();
                         }
                         else if (option == 10)
                         {
-                        //Delete account
                             isLogged = deleteAccount(isLogged);
                         }
                         else if (option == 11)
                         {
-                        //Exit
                             System.out.println("Logging out...");
                             isLogged = !isLogged;
                             userLogged = null;
@@ -220,7 +206,6 @@ class Main
 
         if (sub_option == 1)
         {
-            //Message to a user
             String destination = console.readLine("Insert the nickname of the user you want to send a message: ");
 
             if(findUser(destination, users))
@@ -238,7 +223,6 @@ class Main
         }
         else if (sub_option == 2)
         {
-            //Message to a community
             String destination = console.readLine("Insert the name of the community you want to send a message: ");
             Community com = getCommunity(destination, communities);
 
@@ -312,7 +296,8 @@ class Main
         }
         else
         {
-            User newUser = new User(userName, userPassword, userNickname);
+            ArrayList<Community> userCommunites = new ArrayList<Community>();
+            User newUser = new User(userName, userPassword, userNickname, userCommunites);
             users.add(newUser);
             System.out.println("User created.");
         } 

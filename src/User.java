@@ -21,21 +21,20 @@ class User
 
     public User(String nickname, ArrayList<Community> userCommunites)
     {
-        this.nickname = nickname;
-        this.userCommunites = userCommunites;
+        this(null, null, nickname, userCommunites);
     }
 
     public User(String name, String nickname)
     {
-        this.name = name;
-        this.nickname = nickname;
+        this(name, null, nickname, null);
     }    
 
-    public User(String name, String password, String nickname)
+    public User(String name, String password, String nickname, ArrayList<Community> userCommunites)
     {
         this.name = name;
         this.password = password;
         this.nickname = nickname;
+        this.userCommunites = userCommunites;
     }
 
     public String getNick()
@@ -178,7 +177,7 @@ class User
         System.out.println("Message sent to feed.");
     }
 
-    public void getMessages()
+    public void seeInbox()
     {
         if (this.inbox.isEmpty())
         {
@@ -256,7 +255,7 @@ class User
         }
     }
 
-    public void getComMessages(ArrayList<Community> communities)
+    public void seeCommunityMessages(ArrayList<Community> communities)
     {
         Console console = System.console();
         String communityName = console.readLine("Type your community name: ");
