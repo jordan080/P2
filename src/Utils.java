@@ -1,8 +1,7 @@
 import java.util.ArrayList;
 import java.io.Console;
-import java.util.Scanner;
 
-class Utils implements SendMessage
+class Utils 
 {
     private ArrayList<User> users = new ArrayList<User>();
     private ArrayList<Community> communities = new ArrayList<Community>();
@@ -58,51 +57,47 @@ class Utils implements SendMessage
         } 
     }
 
-    @Override
-    public void sendMessage(String nickname)
+    public void sendMessagetoUser(User userLogged)
     {
         Console console = System.console();
-        System.out.println("1. To a user\n2. To a community\n");
-        Scanner userInput = new Scanner(System.in);
-        int sub_option = userInput.nextInt();
 
         String text = console.readLine("Write your message: ");
+        String nickname = userLogged.getNick();
         Message message = new Message(nickname, text);
+        String destination = console.readLine("Insert the nickname of the user you want to send a message: ");
 
-        if (sub_option == 1)
+        if(Utils.findUser(destination, users))
         {
-            String destination = console.readLine("Insert the nickname of the user you want to send a message: ");
-
-            if(Utils.findUser(destination, users))
-            {
-                User destinyUser = Utils.getUser(destination, users);
-                destinyUser.inbox.add(message);
-                System.out.println("Message sent");
-            }
-            else
-            {
-                System.out.println("User not found.");
-            }
-        }
-        else if (sub_option == 2)
-        {
-            String destination = console.readLine("Insert the name of the community you want to send a message: ");
-            Community com = Utils.getCommunity(destination, communities);
-
-            try
-            {
-                String comName = com.getCommunityName();
-                com.inbox.add(message);
-                System.out.println("Message sent to community " + comName);
-            }
-            catch (Exception e)
-            {
-                System.out.println("Community not found.");
-            }
+            User destinyUser = Utils.getUser(destination, users);
+            destinyUser.addMessage(message);
+            System.out.println("Message sent");
         }
         else
         {
-            System.out.println("Invalid option.");
+            System.out.println("User not found.");
+        }
+    }
+
+    public void sendMessagetoCommunity(User userLogged)
+    {
+        Console console = System.console();
+
+        String text = console.readLine("Write your message: ");
+        String nickname = userLogged.getNick();
+        Message message = new Message(nickname, text);
+
+        String destination = console.readLine("Insert the name of the community you want to send a message: ");
+        Community com = Utils.getCommunity(destination, communities);
+
+        try
+        {
+            String comName = com.getCommunityName();
+            com.inbox.add(message);
+            System.out.println("Message sent to community " + comName);
+        }
+        catch (Exception e)
+        {
+            System.out.println("Community not found.");
         }
     }
 }

@@ -1,36 +1,42 @@
 import java.util.ArrayList;
 import java.io.Console;
 
-public class Feed implements SendMessage
+public class Feed
 {
     private ArrayList<Message> feed = new ArrayList<Message>();
 
-    public Feed(ArrayList<Message> feed)
+    public Feed()
     {
-        this.feed = feed;
+        
     }
 
-    public boolean feedVisibility(boolean onlyFriends)
+    public boolean feedVisibility()
     {
         Console console = System.console();
-        System.out.println("Your feed visibility is: " + onlyFriends);
-        String option = console.readLine("Change feed visibility to only-friends (O) or whole feed (F): ");
+        boolean onlyFriends = true;
+        String option = console.readLine("Change feed visibility to friends-only (O) or whole feed (F): ");
 
         if(option.equals("O"))
         {
             onlyFriends = true;
-            return true;
+            System.out.println("Your feed visibility was set to friends-only");
+        }
+        else if (option.equals("F"))
+        {
+            onlyFriends = false;
+            System.out.println("Your feed visibility was set to whole feed");
         }
         else
         {
-            onlyFriends = false;
-            return false;
+            System.out.println("Try again.");
         }
+
+        return onlyFriends;
     }
 
-    public void seeFeed(boolean onlyFriends, ArrayList<User> friends, String nickname)
+    public void seeFeed(ArrayList<User> friends)
     {
-        boolean feedOpt = this.feedVisibility(onlyFriends);
+        boolean feedOpt = this.feedVisibility();
         if (feedOpt == true)
         {
             for(Message message: feed)
@@ -53,17 +59,11 @@ public class Feed implements SendMessage
         }
     }
 
-    public void addMessage(Message message)
-    {
-        feed.add(message);
-    }
-
-    @Override
-    public void sendMessage(String nickname) 
+    public void sendMessagetoFeed(User userLogged) 
     {
         Console console = System.console();
         String text = console.readLine("Write your message: ");
-        Message message = new Message(nickname, text);
+        Message message = new Message(userLogged.getNick(), text);
         feed.add(message);
         System.out.println("Message sent to feed.");
     }

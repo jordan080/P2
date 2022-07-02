@@ -3,7 +3,7 @@ import java.util.ArrayList;
 class Network
 {
     private ArrayList<Community> communities = new ArrayList<Community>();
-    private ArrayList<Message> feed = new ArrayList<Message>();
+    private Feed feed = new Feed();
     private ArrayList<User> users = new ArrayList<User>(); 
 
     public Network()
@@ -21,7 +21,7 @@ class Network
         return communities;
     }
 
-    public ArrayList<Message> getFeed()
+    public Feed getFeed()
     {
         return feed;
     }

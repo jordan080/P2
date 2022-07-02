@@ -13,11 +13,10 @@ class User
     private Admin admin;
     private boolean onlyFriends = false;
 
-    public ArrayList<User> invites = new ArrayList<User>();
+    private ArrayList<User> invites = new ArrayList<User>();
     public ArrayList<User> friends = new ArrayList<User>();
-    public ArrayList<Message> inbox = new ArrayList<Message>();
+    private ArrayList<Message> inbox = new ArrayList<Message>();
     public ArrayList<Community> userCommunites = new ArrayList<Community>();
-    public ArrayList<Message> feed = new ArrayList<Message>();
 
     public User(String nickname, ArrayList<Community> userCommunites)
     {
@@ -45,6 +44,11 @@ class User
     public String getPass()
     {
         return password;
+    }
+
+    public void addMessage(Message message)
+    {
+        this.inbox.add(message);
     }
 
     public void getProfileInfo()
@@ -120,6 +124,7 @@ class User
             if (answer.equals("Yes") || answer.equals("Y") || answer.equals("yes"))
             {
                 this.friends.add(sentInvite);
+                sentInvite.friends.add(this);
                 System.out.println("Friend added.");
             }
             else if (answer.equals("No") || answer.equals("N") || answer.equals("no"))
@@ -134,7 +139,7 @@ class User
     {
         try
         {
-            feed.seeFeed(onlyFriends, friends, nickname);
+            feed.seeFeed(friends);
         }
         catch (Exception e)
         {

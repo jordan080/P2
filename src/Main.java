@@ -8,22 +8,24 @@ class Main
     static Network iFace = new Network();
     static ArrayList<User> users = iFace.getUsers();
     static ArrayList<Community> communities = iFace.getComs();
-    static Feed feed = new Feed(iFace.getFeed());
+
+    static Feed feed = iFace.getFeed();
     static Utils utils = new Utils(users, communities);
+    static Scanner userInput = new Scanner(System.in);
+    static Console console = System.console();
+    static Controller controller = new Controller(feed, utils, communities);
 
     public static void main(String[] args) 
     {
         boolean isLogged = false;
-        Scanner userInput = new Scanner(System.in);
-        Console console = System.console();
-
         try
-        {
+        {  
             while(true)
             {
                 if (!isLogged)
                 {
                     menuNotLogged();
+
                     try
                     {
                         int option = userInput.nextInt();
@@ -34,11 +36,11 @@ class Main
                         }
                         else if (option == 2)
                         {
-                            System.out.println("Logging on the network.");
+                            System.out.println("Logging in the network.");
                             String userNickname = console.readLine("Nickname: ");
                             String userPassword = console.readLine("Password: ");
 
-                            if(findUser(userNickname, users))
+                            if(Utils.findUser(userNickname, users))
                             {
                                 if(validateLogin(userNickname, userPassword, users))
                                 {
@@ -80,47 +82,18 @@ class Main
                 }
                 else
                 {
+                    controller.setUsers(users);
+                    Scanner userInput = new Scanner(System.in);
                     try
                     {
+                        controller.setUserLogged(userLogged);
+                        controller.setOptions();
                         menuLogged();
                         int option = userInput.nextInt();
 
-                        if (option == 1)
+                        if (option <= 9)
                         {
-                            //sendMessage();
-                            feed.sendMessage(userLogged.getNick());
-                        }
-                        else if (option == 2)
-                        {
-                            userLogged.seeFeed(feed);
-                        }
-                        else if (option == 3)
-                        {
-                            userLogged.seeInbox();
-                        }
-                        else if (option == 4)
-                        {
-                            userLogged.getProfileInfo();
-                        }
-                        else if (option == 5)
-                        {
-                            userLogged.updateProfile();
-                        }
-                        else if (option == 6)
-                        {
-                            userLogged.joinCreateCommunity(communities);
-                        }
-                        else if (option == 7)
-                        {
-                            userLogged.manageCommunity(communities);
-                        }
-                        else if(option == 8)
-                        {
-                            userLogged.seeCommunityMessages(communities);
-                        }
-                        else if (option == 9)
-                        {
-                            userLogged.addRemoveFriend(users);
+                            controller.executeCommand(option);
                         }
                         else if (option == 10)
                         {
@@ -144,7 +117,7 @@ class Main
                         userInput.nextLine();
                     }
                 }
-            }
+            } 
         }
         finally
         {
@@ -152,45 +125,14 @@ class Main
         }
     }
 
-    public static boolean findUser(String nickname, ArrayList<User> users)
-    {
-        for (User user: users)
-        {
-            if (user.getNick().equals(nickname))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static User getUser(String nickname, ArrayList<User> users)
-    {
-        User searchedUser = null;
-        {
-            for (User user: users)
-            {
-                if (user.getNick().equals(nickname))
-                {
-                    searchedUser = user;
-                    return searchedUser;
-                }
-            }
-    
-            return searchedUser;
-        } 
-    }
-
     public static void createAccount()
     {
-        Console console = System.console();
-
         System.out.println("Creating account");
         String userName = console.readLine("Insert your name: ");
         String userNickname = console.readLine("Insert your a nickname: ");
         String userPassword = console.readLine("Insert your password: ");
 
-        if(findUser(userNickname, users))
+        if(Utils.findUser(userNickname, users))
         {
             System.out.println("This user was already created.");
         }
@@ -205,7 +147,6 @@ class Main
 
     public static boolean deleteAccount(boolean isLogged)
     {
-        Console console = System.console();
         System.out.println("This action cannot be undone. Are you sure?");
         String answer = console.readLine();
 
@@ -215,7 +156,6 @@ class Main
 
             for(Community community: userLogged.userCommunites)
             {
-                //User is owner of a community
                 if(community.admin.getNick().equals(userLogged.getNick()))
                 {
                     System.out.println(community.admin.getNick());
