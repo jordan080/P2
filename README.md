@@ -24,10 +24,10 @@
 - Não é possível acessar uma opção do menu principal que não existe
 
 # Code Smells:
-- Código duplicado (Duplicated Code) (classes Main e User, a partir do método getCommunity())
+- Código duplicado (Duplicated Code) (classes Main e User, método getCommunity())
   - O que foi feito: Aplicando o "Extract Class", foi criado uma classe separada que contém os métodos usados por mais de uma classe.
   
-- Construtores com código semelhante (Duplicated Code) (classe User)
+- Construtores com código semelhante (Duplicated Code, construtores da classe User)
   - O que foi feito:
   Aplicar o "Chain Constructors" a partir de um construtor que abrange as variáveis dos outros menores (linhas 32-38), sendo estes usando a  palavra reservada "this" para se referir ao construtor maior, porém usando "null" nas variáveis não utilizadas (linhas 22-30).
 - Vários if/else alinhados (Long Method, "menu" da classe Main)
