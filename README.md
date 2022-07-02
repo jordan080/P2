@@ -25,7 +25,9 @@
 
 # Code Smells:
 - Código duplicado (Duplicated Code) (classes Main e User, método getCommunity())
-  - O que foi feito: Aplicando o "Extract Class", foi criado uma classe separada que contém os métodos usados por mais de uma classe.
+  - Como era anteriomente: As classes Main e User possuiam o mesmo método chamado getCommunity(), isso causava que o código do mesmo método estava duplicado em duas classes. 
+  
+  - O que foi feito: Aplicando o "Extract Class", foi criado uma classe separada (Utils) que contém os métodos usados por mais de uma classe.
   
 - Construtores com código semelhante (Duplicated Code, construtores da classe User)
   - O que foi feito:
