@@ -25,12 +25,13 @@
 
 # Code Smells:
 - Código duplicado (Duplicated Code) (classes Main e User, a partir do método getCommunity())
-  - O que foi feito: Foi criado uma classe que contém os métodos usados por mais uma classe (Extract Class).
+  - O que foi feito: Aplicando o pattern Extract Class, foi criado uma classe separada que contém os métodos usados por mais de uma classe.
 - Construtores com código semelhante (Duplicated Code) (classe User)
   - O que foi feito:
   Aplicar o pattern "Chain Constructors" a partir de um construtor que abrange as variáveis dos outros menores (linhas 32-38), sendo estes usando a  palavra reservada "this" para se referir ao construtor maior, porém usando "null" nas variáveis não utilizadas (linhas 22-30).
 - Vários if/else alinhados (Long Method, "menu" da classe Main)
 - Feature Envy (classe Main, métodos sendMessage() e addRemoveFriend())
+  - O que foi feito: addRemoveFriend() foi movido para a classe User, enquanto que sendMessage() foi dividido para as classes Utils e Feed, a partir de uma interface chamada SendMessage 
 - Método muito grande (Long Method) (Método sendMessage())
 - Comentários (Arquivo Main.java)
-  - O que foi feito: Vários comentários foram removidos, variáveis e funções com abreviações e nomes confusos foram ajustados.
+  - O que foi feito: Vários comentários foram removidos, variáveis e métodos com abreviações e nomes confusos foram ajustados.
