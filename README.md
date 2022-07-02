@@ -34,6 +34,6 @@
 - Feature Envy (classe Main, métodos sendMessage() e addRemoveFriend())
   - O que foi feito: addRemoveFriend() foi movido para a classe User (Move Method), enquanto que sendMessage() foi dividido para as classes Utils e Feed.
 - Método muito grande (Long Method, método sendMessage())
-  - O que foi feito: Foi dividido para as classes Utils e Feed, a partir de uma interface chamada SendMessage. 
+  - O que foi feito: Aplicando a técnica "Extract Method", foi dividido em três métodos chamados sendMessagetoUser(), sendMessagetoCommunity() e sendMessagetoFeed().
 - Comentários (Arquivo Main.java)
   - O que foi feito: Vários comentários foram removidos, variáveis e métodos com abreviações e nomes confusos foram ajustados.
