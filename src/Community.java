@@ -19,7 +19,7 @@ class Community
         owner.userCommunites.add(this);
     }
 
-    public String getComName()
+    public String getCommunityName()
     {
         return name;
     }

@@ -4,7 +4,6 @@ import java.util.Scanner;
 
 public class Admin extends User
 {
-    private String nickname;
     public ArrayList<Community> userCommunites = new ArrayList<Community>();
 
     public Admin(String nickname, ArrayList<Community> userCommunites)
@@ -22,7 +21,7 @@ public class Admin extends User
         if (sub_option == 1)
         {
             String communityName = console.readLine("Type your community name: ");
-            Community com = getCommunity(communityName, communities);
+            Community com = Utils.getCommunity(communityName, communities);
 
             try
             {
@@ -36,7 +35,7 @@ public class Admin extends User
         if (sub_option == 2)
         {
             String communityName = console.readLine("Type your community name: ");
-            Community com = getCommunity(communityName, communities);
+            Community com = Utils.getCommunity(communityName, communities);
 
             try
             {
@@ -50,7 +49,7 @@ public class Admin extends User
         if (sub_option == 3)
         {
             String communityName = console.readLine("Type your community name: ");
-            Community com = getCommunity(communityName, communities);
+            Community com = Utils.getCommunity(communityName, communities);
 
             try
             {

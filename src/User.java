@@ -47,23 +47,7 @@ class User
         return password;
     }
 
-    public static Community getCommunity(String comName, ArrayList<Community> communities)
-    {
-        Community searchedCom = null;
-
-        for(Community community: communities)
-        {
-            if(community.getComName().equals(comName))
-            {
-                searchedCom = community;
-                return searchedCom;
-            }
-        }
-
-        return searchedCom;
-    }
-
-    public void getInfo()
+    public void getProfileInfo()
     {
         try
         {
@@ -91,6 +75,38 @@ class User
         }
     }
 
+    public void addRemoveFriend(ArrayList<User> users)
+    {
+        System.out.println("1. See invites\n2. Add a friend");
+        Scanner userInput = new Scanner(System.in);
+        Console console = System.console();
+
+        int sub_option = userInput.nextInt();
+
+        if (sub_option == 1)
+        {
+            this.checkFriendshipRequests();
+        }
+        else if (sub_option == 2)
+        {
+            String friendNick = console.readLine("Insert nickname: ");
+
+            if(Utils.findUser(friendNick, users))
+            {
+                User invitedUser = Utils.getUser(friendNick, users);
+                invitedUser.invites.add(this);
+            }
+            else
+            {
+                System.out.println("There is no user with given nickname.");
+            }
+        }
+        else
+        {
+            System.out.println("Insert valid option.");
+        }
+    }
+
     public void checkFriendshipRequests()
     {
         System.out.println("You have " + invites.size() + " invites.");
@@ -100,81 +116,30 @@ class User
         {
             System.out.println(sentInvite.nickname + " wants to be your friend.");
             String answer = console.readLine("Do you accept? ");
-            //System.out.println(answer);
 
             if (answer.equals("Yes") || answer.equals("Y") || answer.equals("yes"))
             {
                 this.friends.add(sentInvite);
-                //this.invites.remove(sentInvite);
                 System.out.println("Friend added.");
             }
             else if (answer.equals("No") || answer.equals("N") || answer.equals("no"))
             {
-                //this.invites.remove(sentInvite);
                 System.out.println("Invite rejected.");
             }
         }
         this.invites.clear();
     }
 
-    public boolean feedVisibility()
+    public void seeFeed(Feed feed)
     {
-        Console console = System.console();
-        System.out.println("Your feed visibility is: " + this.onlyFriends);
-        String option = console.readLine("Change feed visibility to only-friends (O) or whole feed (F): ");
-
-        if(option.equals("O"))
+        try
         {
-            this.onlyFriends = true;
-            return true;
+            feed.seeFeed(onlyFriends, friends, nickname);
         }
-        else
-        {
-            this.onlyFriends = false;
-            return false;
-        }
-    }
-
-    public void seeFeed(ArrayList<Message> feed)
-    {
-        if (feed.isEmpty())
+        catch (Exception e)
         {
             System.out.println("The feed is empty.");
         }
-        else
-        {
-            boolean feedOpt = this.feedVisibility();
-            if (feedOpt == true)
-            {
-                for(Message message: feed)
-                {
-                    for(User friend: this.friends)
-                    {
-                        if(message.getAuthor().equals(friend.nickname))
-                        {
-                            System.out.println(message.getAuthor() + ": " + message.getMessage());
-                        }
-                    }
-                }
-            }
-            else
-            {
-                for(Message message: feed)
-                {
-                    System.out.println(message.getAuthor() + ": " + message.getMessage());
-                }
-            }
-        }
-    }
-
-    public void sendMessagetoFeed(ArrayList<Message> feed)
-    {
-        //Message to feed
-        Console console = System.console();
-        String text = console.readLine("Write your message: ");
-        Message message = new Message(this.nickname, text);
-        feed.add(message);
-        System.out.println("Message sent to feed.");
     }
 
     public void seeInbox()
@@ -205,7 +170,7 @@ class User
         }
     }
 
-    public void addRemoveCommunity(ArrayList<Community> communities) throws IOException
+    public void joinCreateCommunity(ArrayList<Community> communities) throws IOException
     {
         System.out.println("1. Join a community\n2. Create a community");
 
@@ -216,7 +181,7 @@ class User
         if(sub_option == 1)
         {
             String communityName = console.readLine("Community name: ");
-            Community com = getCommunity(communityName, communities);
+            Community com = Utils.getCommunity(communityName, communities);
 
             try
             {
@@ -231,7 +196,7 @@ class User
         else if (sub_option == 2)
         {
             String newCommunityName = console.readLine("New community name: ");
-            Community checkCom = getCommunity(newCommunityName, communities);
+            Community checkCom = Utils.getCommunity(newCommunityName, communities);
 
             if(checkCom != null)
             {
@@ -259,7 +224,7 @@ class User
     {
         Console console = System.console();
         String communityName = console.readLine("Type your community name: ");
-        Community com = getCommunity(communityName, communities);
+        Community com = Utils.getCommunity(communityName, communities);
 
         try
         {

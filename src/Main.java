@@ -1,6 +1,5 @@
 import java.io.Console;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Scanner;
 
 class Main
@@ -9,7 +8,8 @@ class Main
     static Network iFace = new Network();
     static ArrayList<User> users = iFace.getUsers();
     static ArrayList<Community> communities = iFace.getComs();
-    static ArrayList<Message> feed = iFace.getFeed();
+    static Feed feed = new Feed(iFace.getFeed());
+    static Utils utils = new Utils(users, communities);
 
     public static void main(String[] args) 
     {
@@ -87,7 +87,8 @@ class Main
 
                         if (option == 1)
                         {
-                            sendMessage();
+                            //sendMessage();
+                            feed.sendMessage(userLogged.getNick());
                         }
                         else if (option == 2)
                         {
@@ -99,7 +100,7 @@ class Main
                         }
                         else if (option == 4)
                         {
-                            userLogged.getInfo();
+                            userLogged.getProfileInfo();
                         }
                         else if (option == 5)
                         {
@@ -107,7 +108,7 @@ class Main
                         }
                         else if (option == 6)
                         {
-                            userLogged.addRemoveCommunity(communities);
+                            userLogged.joinCreateCommunity(communities);
                         }
                         else if (option == 7)
                         {
@@ -119,7 +120,7 @@ class Main
                         }
                         else if (option == 9)
                         {
-                            addRemoveFriend();
+                            userLogged.addRemoveFriend(users);
                         }
                         else if (option == 10)
                         {
@@ -178,107 +179,6 @@ class Main
     
             return searchedUser;
         } 
-    }
-
-    public static Community getCommunity(String comName, ArrayList<Community> communities)
-    {
-        Community searchedCom = null;
-
-        for(Community community: communities)
-        {
-            if(community.getComName().equals(comName))
-            {
-                searchedCom = community;
-                return searchedCom;
-            }
-        }
-
-        return searchedCom;
-    }
-
-    public static void sendMessage()
-    {
-        Console console = System.console();
-        
-        System.out.println("1. To a user\n2. To a community\n3. To the feed");
-        Scanner userInput = new Scanner(System.in);
-        int sub_option = userInput.nextInt();
-
-        if (sub_option == 1)
-        {
-            String destination = console.readLine("Insert the nickname of the user you want to send a message: ");
-
-            if(findUser(destination, users))
-            {
-                String text = console.readLine("Write your message: ");
-                Message message = new Message(userLogged.getNick(), text);
-                User destinyUser = getUser(destination, users);
-                destinyUser.inbox.add(message);
-                System.out.println("Message sent");
-            }
-            else
-            {
-                System.out.println("User not found.");
-            }
-        }
-        else if (sub_option == 2)
-        {
-            String destination = console.readLine("Insert the name of the community you want to send a message: ");
-            Community com = getCommunity(destination, communities);
-
-            try
-            {
-                String comName = com.getComName();
-                String text = console.readLine("Write your message: ");
-                Message message = new Message(userLogged.getNick(), text);
-                com.inbox.add(message);
-                System.out.println("Message sent to community " + comName);
-            }
-            catch (Exception e)
-            {
-                System.out.println("Community not found.");
-            }
-        }
-        else if (sub_option == 3)
-        {
-            userLogged.sendMessagetoFeed(feed);
-        }
-        else
-        {
-            System.out.println("Insert valid option.");
-        }
-    }
-
-    public static void addRemoveFriend()
-    {
-        System.out.println("1. See invites\n2. Add a friend");
-        Scanner userInput = new Scanner(System.in);
-        Console console = System.console();
-
-        int sub_option = userInput.nextInt();
-
-        if (sub_option == 1)
-        {
-            userLogged.checkFriendshipRequests();
-        }
-        else if (sub_option == 2)
-        {
-            String friendNick = console.readLine("Insert nickname: ");
-
-            if(findUser(friendNick, users))
-            {
-                User invitedUser = getUser(friendNick, users);
-                invitedUser.invites.add(userLogged);
-            }
-            else
-            {
-                System.out.println("There is no user with given nickname.");
-            }
-        }
-        else
-        {
-            System.out.println("Insert valid option.");
-        }
     }
 
     public static void createAccount()
