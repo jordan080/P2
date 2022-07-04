@@ -37,12 +37,12 @@
 - Vários if/else alinhados (Long Method)
   - Como era anteriormente: Na classe Main haviam vários if/else que serviam como checks para a opção do menu que o usuário desejava, principalmente quando ele entrava no sistema.
   
-  - O que foi feito: Foi criada uma interface que serve de comando para outras classes que a implementarem (Command). Esta interface possui um método executeCommand() na qual a sua ideia seja nada mais que executar o método referente ao nome da classe que a implementa. (ex.: A classe SeeFeedCommand possui em seu método executeCommand() outro método para executar a função de mostrar o feed). Além destas, foi implementada uma classe Controller que tem função de chamar um comando a partir do número da opção do menu. Esta classe se integra às outras que possuem a interface Command implementada.
+  - O que foi feito: Foi criada uma interface que serve de comando para outras classes que a implementarem (técnica "Command"). Esta interface possui um método executeCommand() na qual a sua ideia seja nada mais que executar o método referente ao nome da classe que a implementa. (ex.: A classe SeeFeedCommand possui em seu método executeCommand() outro método para executar a função de mostrar o feed). Além destas, foi implementada uma classe Controller que tem função de chamar um comando a partir do número da opção do menu. Esta classe se integra às outras que possuem a interface Command implementada.
   
 - Feature Envy (classe Main, métodos sendMessage() e addRemoveFriend())
   - Como era anteriormente: Na classe Main, existiam os métodos sendMessage() e addRemoveFriend() que não faziam muito sentido de estarem lá pois "encaixariam" melhor em outras classes.
   
-  - O que foi feito: addRemoveFriend() foi movido para a classe User (Move Method), enquanto que sendMessage() foi dividido e enviado para as classes Utils e Feed.
+  - O que foi feito: addRemoveFriend() foi movido para a classe User (técnica "Move Method"), enquanto que sendMessage() foi dividido e enviado para as classes Utils e Feed.
   
 - Método muito grande (Long Method, método sendMessage())
   - Como era anteriormente: sendMessage() era um método grande demais para a sua função.
@@ -51,4 +51,4 @@
 - Comentários (Arquivo Main.java)
   - Como era anteriormente: Existiam vários comentários que serviam para orientar quem estava lendo o código, sendo que o próprio código deveria se explicar por si só.
   
-  - O que foi feito: Vários comentários foram removidos, variáveis e métodos com abreviações e nomes confusos foram ajustados.
+  - O que foi feito: Vários comentários foram removidos, inclusive, aplicando a técnica "Rename Method", variáveis e métodos com abreviações e nomes confusos foram ajustados.
