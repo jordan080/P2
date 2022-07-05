@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-class SeeFeedCommand implements Command
+class SeeFeedCommand extends Controller implements Command
 {
     private String name;
     private String password;
@@ -12,6 +12,7 @@ class SeeFeedCommand implements Command
 
     public SeeFeedCommand(User userLogged, Feed feed) 
     {
+        super(userLogged, feed);
         this.userLogged = userLogged;
         this.feed = feed;
     }

@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-class AddRemoveFriendCommand implements Command 
+class AddRemoveFriendCommand extends Controller implements Command 
 {
     private String name;
     private String password;
@@ -10,10 +10,11 @@ class AddRemoveFriendCommand implements Command
 
     private ArrayList<User> users = new ArrayList<User>();
 
-    public AddRemoveFriendCommand(User userLogged, ArrayList<User> users)
+    public AddRemoveFriendCommand(ArrayList<User> users, User userLogged)
     {
-        this.userLogged = userLogged;
+        super(users, userLogged);
         this.users = users;
+        this.userLogged = userLogged;
     }
 
     @Override

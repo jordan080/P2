@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-class UpdateProfileCommand implements Command
+class UpdateProfileCommand extends Controller implements Command
 {
     private String name;
     private String password;
@@ -10,6 +10,7 @@ class UpdateProfileCommand implements Command
 
     public UpdateProfileCommand(User userLogged) 
     {
+        super(userLogged);
         this.userLogged = userLogged;
     }
 

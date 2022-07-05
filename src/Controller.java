@@ -20,6 +20,37 @@ class Controller
         this.communities = communities;
     }
 
+    public Controller(User userLogged)
+    {
+        this.userLogged = userLogged;
+    }
+
+    public Controller(User userLogged, Feed feed)
+    {
+        this.userLogged = userLogged;
+        this.feed = feed;
+    }
+
+    public Controller(User userLogged, ArrayList<Community> communities)
+    {
+        this.userLogged = userLogged;
+        this.communities = communities;
+    }
+
+    public Controller(ArrayList<User> users, User userLogged)
+    {
+        this.users = users;
+        this.userLogged = userLogged;
+    }
+
+
+    public Controller(User userLogged, Utils utils, Feed feed)
+    {
+        this.userLogged = userLogged;
+        this.utils = utils;
+        this.feed = feed;
+    }
+
     public void setUserLogged(User userLogged)
     {
         this.userLogged = userLogged;
@@ -40,7 +71,7 @@ class Controller
         options[6] = new JoinCreateCommunity(userLogged, communities);
         options[7] = new ManageCommunityCommand(userLogged, communities);
         options[8] = new SeeCommunityMessagesCommand(userLogged, communities);
-        options[9] = new AddRemoveFriendCommand(userLogged, users);
+        options[9] = new AddRemoveFriendCommand(users, userLogged);
     }
 
     public void executeCommand(int option)

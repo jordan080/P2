@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-class GetProfileInfoCommand implements Command
+class GetProfileInfoCommand extends Controller implements Command
 {
     private String name;
     private String password;
@@ -10,6 +10,7 @@ class GetProfileInfoCommand implements Command
 
     public GetProfileInfoCommand(User userLogged) 
     {
+        super(userLogged);
         this.userLogged = userLogged;
     }
 

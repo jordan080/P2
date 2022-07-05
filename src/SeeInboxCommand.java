@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-class SeeInboxCommand implements Command
+class SeeInboxCommand extends Controller implements Command
 {
     private String name;
     private String password;
@@ -10,6 +10,7 @@ class SeeInboxCommand implements Command
 
     public SeeInboxCommand(User userLogged) 
     {
+        super(userLogged);
         this.userLogged = userLogged;
     }
 

@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-class SeeCommunityMessagesCommand implements Command
+class SeeCommunityMessagesCommand extends Controller implements Command
 {
     private String name;
     private String password;
@@ -10,6 +10,7 @@ class SeeCommunityMessagesCommand implements Command
 
     public SeeCommunityMessagesCommand(User userLogged, ArrayList<Community> communities) 
     {
+        super(userLogged, communities);
         this.userLogged = userLogged;
         this.communities = communities;
     }

@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-class ManageCommunityCommand implements Command
+class ManageCommunityCommand extends Controller implements Command
 {
     private String name;
     private String password;
@@ -10,6 +10,7 @@ class ManageCommunityCommand implements Command
 
     public ManageCommunityCommand(User userLogged, ArrayList<Community> communities) 
     {
+        super(userLogged, communities);
         this.userLogged = userLogged;
         this.communities = communities;
     }

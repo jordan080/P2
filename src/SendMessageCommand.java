@@ -1,7 +1,7 @@
 import java.util.Scanner;
 import java.util.ArrayList;
 
-public class SendMessageCommand implements Command
+public class SendMessageCommand extends Controller implements Command
 {
     private String name;
     private String password;
@@ -15,6 +15,7 @@ public class SendMessageCommand implements Command
 
     public SendMessageCommand(User userLogged, Utils utils, Feed feed)
     {
+        super(userLogged, utils, feed);
         this.userLogged = userLogged;
         this.utils = utils;
         this.feed = feed;
